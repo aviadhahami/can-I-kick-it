@@ -1,0 +1,26 @@
+name: "JFrog  NPM Integration Example"
+on: push
+
+permissions:
+  id-token: write
+jobs:
+  build:
+     runs-on: ubuntu-latest
+
+       
+     steps:
+       - name: Checkout
+         uses: actions/checkout@v3
+
+       - name: Setup Jfrog CLI OIDC
+         uses: jfrog/setup-jfrog-cli@v3
+         env:
+          JF_URL: https://myjfrogtutorial.jfrog.io
+         with:
+          oidc-provider-name: github-jfrog 
+          oidc-audience: my-aud
+           
+       - name: Set CLI Config
+         run: jf npm-config --global=true --repo-resolve=npm-virtual --repo-deploy=npm-virtual
+       - name: version
+         run: jf version
